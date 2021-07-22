@@ -5,7 +5,7 @@ import streamlit as st
 import pandas as pd
 
 #funções db
-from db import cadastro,contagem,consulta,atualizar,consulta_todos,pesquisando,precos
+from db import cadastro,contagem,consulta,atualizar,consulta_todos,pesquisando,precos,deleta_dado
 
 def main():
     #st.title('CotAqui')
@@ -35,12 +35,50 @@ def main():
     elif choice == 'Cadastrar Materiais':
         st.subheader('Cadastrar materiais')
         #st.image(r'img/materiais.jpg', width=300)
+        sel_1=[]
+        sel_2=[]
+        sel_3=[]
+        d1=''
+        d2=0
+        d3=''
+
         with st.beta_expander('Materiais Cadastrados'):
             todos=consulta_todos('materiais')
             df = pd.DataFrame(todos,columns=['Código','Nome','Unidade'])
             st.dataframe(df)
-        nome = st.text_input(label='Nome do Material')
-        unidade = st.selectbox('Unidade', ['m²', 'm³', 'kg', 'unid', 'kg/m'])
+            # carregar selectbox materiais
+            lista = []
+
+            for l in todos:
+                sel_1.append(l[1])
+                sel_2.append(l[2])
+                #sel_3.append(l[3])
+
+                lista.append(l[1])
+
+            lista = list(dict.fromkeys(lista))  # removendo valores duplicados
+            lista = sorted(lista)
+            d1 = st.selectbox('Materiais ', lista)
+            if (d1 != ''):
+                j = 0
+                for k in sel_1:
+                    if (d1 == k):
+                        i=0
+                        for z in ['m²', 'm³', 'kg', 'unid', 'kg/m']:
+                            if sel_2[j]==z:
+                                d2=i
+                            i=i+1
+                        #d3 = sel_3[j]
+                    j = j + 1
+            deletando = st.button('Deletar Selecionado')
+            if deletando and d1 != '':
+                # deletar dado
+                with st.spinner('Deletando dado!'):
+                    deleta_dado('materiais', 'nome', d1)
+                st.success('Dado deletado!')
+
+        nome = st.text_input(label='Nome do Material',value=d1)
+        unidade = st.selectbox('Unidade', ['m²', 'm³', 'kg', 'unid', 'kg/m'],index=d2)
         if st.button('Cadastrar'):
             #fazer pesquisa para ver se existe
             resultado=consulta('materiais','nome',nome)
@@ -54,10 +92,10 @@ def main():
                 #se já existe, atualizar
                 with st.spinner('Material já existente no banco de dados...atualizando!'):
                     base='materiais'
-                    set='nome=?,unidade=?'
+                    set='nome=%s,unidade=%s'
                     onde='cod_material'
-                    dado=id
-                    task=[nome,unidade]
+                    dado='%s' #id
+                    task=(nome,unidade,id)
                     atualizar(task, base, set, onde, dado)
                 st.success('Dado atualizado!')
             else:
@@ -67,7 +105,7 @@ def main():
                     #n=0
                     cod_material=n+1
                     base='materiais(cod_material,nome,unidade)'
-                    lista=[cod_material,nome,unidade]
+                    lista=(cod_material,nome,unidade)
                     cadastro(base,lista)
                 st.success('Cadastro efetuado!')
 
@@ -75,14 +113,47 @@ def main():
     #PÁGINA DE CADASTRO DE EMPRESAS
     elif choice == 'Cadastrar Empresas':
         st.subheader('Cadastrar empresas')
+        sel_1=[]
+        sel_2=[]
+        sel_3=[]
+        d1=''
+        d2=''
+        d3=''
         #st.image(r'img/empresas.jpg', width=300)
         with st.beta_expander('Empresas Cadastradas'):
             todos = consulta_todos('empresas')
             df = pd.DataFrame(todos, columns=['Código', 'Nome', 'Telefone','Endereço'])
             st.dataframe(df)
-        nome = st.text_input(label='Nome da empresa')
-        telefone = st.text_input(label='Telefone')
-        endereco = st.text_input(label='Endereço')
+            #carregar selectbox empresas
+            lista = []
+
+            for l in todos:
+                sel_1.append(l[1])
+                sel_2.append(l[2])
+                sel_3.append(l[3])
+
+                lista.append(l[1])
+
+            lista = list(dict.fromkeys(lista))  # removendo valores duplicados
+            lista = sorted(lista)
+            d1=st.selectbox('Empresas ',lista)
+            if (d1!=''):
+                j=0
+                for k in sel_1:
+                    if (d1==k):
+                        d2=sel_2[j]
+                        d3=sel_3[j]
+                    j=j+1
+            deletando=st.button('Deletar Selecionado')
+            if deletando and d1!='':
+                #deletar dado
+                with st.spinner('Deletando dado!'):
+                    deleta_dado('empresas', 'nome', d1)
+                st.success('Dado deletado!')
+
+        nome = st.text_input(label='Nome da empresa',value=d1)
+        telefone = st.text_input(label='Telefone',value=d2)
+        endereco = st.text_input(label='Endereço',value=d3)
         if st.button('Cadastrar'):
             # fazer pesquisa para ver se existe
             resultado = consulta('empresas', 'nome', nome)
@@ -96,10 +167,10 @@ def main():
                 # se já existe, atualizar
                 with st.spinner('Empresa já existente no banco de dados...atualizando!'):
                     base = 'empresas'
-                    set = 'nome=?,telefone=?,endereco=?'
+                    set = 'nome=%s,telefone=%s,endereco=%s'
                     onde = 'cod_empresa'
-                    dado = id
-                    task = [nome, telefone,endereco]
+                    dado = '%s' #id
+                    task = (nome, telefone,endereco,id)
                     atualizar(task, base, set, onde, dado)
                 st.success('Dado atualizado!')
             else:
@@ -109,7 +180,7 @@ def main():
                     # n=0
                     cod_empresa = n + 1
                     base='empresas(cod_empresa,nome,telefone,endereco)'
-                    lista=[cod_empresa,nome,telefone,endereco]
+                    lista=(cod_empresa,nome,telefone,endereco)
                     cadastro(base,lista)
                 st.success('Cadastro efetuado!')
 
@@ -200,17 +271,17 @@ def main():
                 # se já existe, atualizar
                 with st.spinner('Cotação já existente no banco de dados...atualizando!'):
                     base = 'cotacao'
-                    set = 'preco=?,data=?'
+                    set = 'preco=%s,data=%s'
                     onde = 'cod_material'
-                    dado = cod_material + '" and cod_empresa = "' + cod_empresa
-                    task = [preco, data]
+                    dado = '%s and cod_empresa = %s'#cod_material + '" and cod_empresa = "' + cod_empresa
+                    task = (preco, data,cod_material,cod_empresa)
                     atualizar(task, base, set, onde, dado)
                 st.success('Dado atualizado!')
             else:
                 # se não existe, cadastrar novo
                 with st.spinner('Cadastrando novo material...'):
                     base='cotacao(cod_material,cod_empresa,preco,data)'
-                    lista=[cod_material,cod_empresa,preco,data]
+                    lista=(cod_material,cod_empresa,preco,data)
                     cadastro(base,lista)
                 st.success('Cadastro efetuado!')
 
@@ -244,12 +315,15 @@ def main():
         unidade = dado[0][2]
 
         menor=precos(cod_material,'MIN')
-        preco=menor[0][0]
-        empresa=menor[0][1]
-        data=menor[0][2]
-        telefone=''
-        endereco=''
+
         try:
+
+            preco = menor[0][0]
+            empresa = menor[0][1]
+            data = menor[0][2]
+            telefone = ''
+            endereco = ''
+
             resultado = consulta('empresas', 'cod_empresa', empresa)
             try:
                 empresa = resultado[0][1]
