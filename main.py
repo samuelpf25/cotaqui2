@@ -1,11 +1,21 @@
 from datetime import datetime
-
+import pyrebase
 import streamlit as st
 
 import pandas as pd
 
 #funções db
 from db import cadastro,contagem,consulta,atualizar,consulta_todos,pesquisando,precos,deleta_dado
+
+#ocultar menu
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+#fim ocultar menu
 
 def main():
     #st.title('CotAqui')
@@ -390,6 +400,20 @@ def main():
 #                 st.text('Login inválido!')
 #     return v
 if __name__ == '__main__':
+    # firebaseConfig = {
+    #     'apiKey': "AIzaSyCRboPuxiRGk7dK3MIHorg-nbhzOWdn7Kw",
+    #     'authDomain': "cotaqui-3d6ec.firebaseapp.com",
+    #     'projectId': "cotaqui-3d6ec",
+    #     'databaseURL': "https://cotaqui-3d6ec-default-rtdb.firebaseio.com/",
+    #     'storageBucket': "cotaqui-3d6ec.appspot.com",
+    #     'messagingSenderId': "57620546034",
+    #     'appId': "1:57620546034:web:c522fa40070b5d3a55ab6b",
+    #     'measurementId': "G-38WR68TP9H"}
+    # firebase = pyrebase.initialize_app(firebaseConfig)
+    # auth = firebase.auth()
+    # db = firebase.database()
+    # storage = firebase.storage()
+
     #t=login()
     #if t=='OK':
     #    st.empty()
