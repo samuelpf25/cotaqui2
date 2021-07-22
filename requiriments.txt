@@ -124,7 +124,7 @@ six==1.15.0
 smmap==4.0.0
 sniffio==1.2.0
 SOAPpy==0.12.22
-streamlit==0.84.2
+streamlit~=0.83.0
 terminado==0.10.1
 testpath==0.5.0
 tk==0.1.0
@@ -143,3 +143,6 @@ webencodings==0.5.1
 websocket-client==1.1.0
 widgetsnbextension==3.5.1
 wstools==0.4.8
+
+mysql~=0.0.3
+mysql-connector-python~=8.0.26
