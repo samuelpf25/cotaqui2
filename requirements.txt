@@ -1,6 +1,6 @@
 streamlit
-mysql-connector==2.2.9
-mysql-connector-python==8.0.26
-mysqlclient==2.0.3
+mysql-connector
+mysql-connector-python
+mysqlclient
 datatime
 pandas
