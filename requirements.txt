@@ -1,6 +1,5 @@
 streamlit
 mysql-connector
 mysql-connector-python
-mysqlclient
 datatime
 pandas
