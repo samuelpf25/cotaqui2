@@ -40,10 +40,10 @@ def contagem(tabela):
     return n1
 
 def consulta(tabela,onde,dado):
-    conn, c = carregar()
+    #conn, c = carregar()
     c.execute('SELECT * FROM ' + tabela + ' WHERE ' + onde + ' = "' + dado + '"')
     data = c.fetchall()
-    conn.close()
+    #conn.close()
     return data
 
 def consulta_todos(tabela):
