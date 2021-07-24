@@ -11,7 +11,7 @@ def carregar():
     #user='id17287557_samuelpf25', password='#Sa747400027816', host='localhost:3306', database='id17287557_consulta'
     #host="localhost",user="root",password="",database="consulta_mysql"
     #user='296184',password='747400', host='cotaqui.orgfree.com', port=3306,database='296184'
-    conn=mysql.connector.connect(user='ur4cz0bal9a1nwkk',password='s09ygCIVSwJ25ydgMIet', host='bwdczptcydolxiwwho4y-mysql.services.clever-cloud.com', port=3306,database='bwdczptcydolxiwwho4y')
+    conn=mysql.connector.connect(user=st.secrets["user"],password=st.secrets["password"], host=st.secrets["host"], port=3306,database=st.secrets["database"])
     c=conn.cursor()
     #c.execute("CREATE TABLE cotacao (cod_material TEXT, cod_empresa TEXT, preco TEXT, data TEXT)")
     #c.execute("CREATE TABLE empresas (cod_empresa TEXT, nome TEXT, telefone TEXT, endereco TEXT)")
