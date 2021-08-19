@@ -1,4 +1,5 @@
 import mysql.connector
+import streamlit as st
 
 #with mysql.connector.connect(user='ur4cz0bal9a1nwkk',password='s09ygCIVSwJ25ydgMIet', host='bwdczptcydolxiwwho4y-mysql.services.clever-cloud.com', port=3306,database='bwdczptcydolxiwwho4y') as conn:
     #with mysql.connector.connect(user='ur4cz0bal9a1nwkk',password='s09ygCIVSwJ25ydgMIet', host='bwdczptcydolxiwwho4y-mysql.services.clever-cloud.com', port=3306,database='bwdczptcydolxiwwho4y').cursor() as c:
